@@ -1,18 +1,23 @@
 package com.example.restapi.controller;
 
+
+
 import com.example.restapi.model.Customers;
 import com.example.restapi.service.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 
 
 @RestController
 @RequestMapping("/api")
+@Transactional
 public class Controllers {
 
     @Autowired
     BankService bankService;
+
 
 
     @GetMapping("/getBalance/{id}")
@@ -22,9 +27,10 @@ public class Controllers {
 
         }catch (Exception e){
             System.out.println(e.getMessage());
-
             return "Id не найден " + e;
         }
+
+
     }
 
 
@@ -43,7 +49,7 @@ public class Controllers {
         }
         int PutMoney = customers.getBalance();
         if (PutMoney<=0){
-            return  balance + "ошибка при выполнении операции";
+            return  balance + " ошибка при выполнении операции";
         }
         customers.setBalance(balance+PutMoney);
         bankService.createacc(customers);
@@ -52,6 +58,7 @@ public class Controllers {
 
     @PutMapping("/takeMoney")
     public String takeMoney(@RequestBody Customers customers){
+
         int balance = 0;
         try {
             balance =  bankService.getBalance(customers.getId());
@@ -64,9 +71,11 @@ public class Controllers {
         int TakeMoney = customers.getBalance();
         if (TakeMoney<=0){
             return  balance + "недостаточно средств";
-       }
+        }
        customers.setBalance(balance-TakeMoney);
        bankService.createacc(customers);
-       return "Успешно отнято " + balance;
+
+        return "Успешно отнято " + balance;
+
    }
 }
