@@ -1,31 +1,34 @@
 package com.example.restapi.controller;
 
 
-
+import com.example.restapi.dao.Dao;
 import com.example.restapi.model.Customers;
+import com.example.restapi.model.Operation;
 import com.example.restapi.service.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
+
 
 
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class Controllers {
 
     @Autowired
     BankService bankService;
 
-
+    @Autowired
+    OperInsertRepository operInsertRepository;
 
     @GetMapping("/getBalance/{id}")
-    public String getBalance(@PathVariable int id) {
+    public String getBalance(@Validated @PathVariable int id) {
         try {
             return bankService.getBalance(id) + "";
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return "Id не найден " + e;
         }
@@ -35,47 +38,53 @@ public class Controllers {
 
 
 
-    @PutMapping("/putMoney")
-    public String putMoney(@RequestBody Customers customers){
+    @PostMapping("/putMoney/")
+    public String putMoney(@Validated @RequestBody Customers customers) {
         int balance = 0;
         try {
-         balance =  bankService.getBalance(customers.getId());
+            balance = bankService.getBalance(customers.getId());
 
-        }catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             return "ID не найден";
-        }
-        catch (Exception e){
-            return "ошибка 0 " +  e;
+        } catch (Exception e) {
+            return "ошибка 0 " + e;
         }
         int PutMoney = customers.getBalance();
-        if (PutMoney<=0){
-            return  balance + " ошибка при выполнении операции";
+        if (PutMoney <= 0) {
+            return balance + " ошибка при выполнении операции";
         }
-        customers.setBalance(balance+PutMoney);
+        customers.setBalance(balance + PutMoney);
         bankService.createacc(customers);
+        operInsertRepository.insertWithQuery(balance, customers.getId());
         return "Успешно добавлено " + balance;
+
+
     }
 
-    @PutMapping("/takeMoney")
-    public String takeMoney(@RequestBody Customers customers){
+
+    @PostMapping("/takeMoney")
+    public String takeMoney(@RequestBody Customers customers) {
 
         int balance = 0;
         try {
-            balance =  bankService.getBalance(customers.getId());
-        }catch (EntityNotFoundException e){
+            balance = bankService.getBalance(customers.getId());
+        } catch (EntityNotFoundException e) {
             return "ID не найден";
-        }
-        catch (Exception e){
-            return "ошибка 0" + e;
+        } catch (Exception e) {
+            return "ошибка 0 " + e;
         }
         int TakeMoney = customers.getBalance();
-        if (TakeMoney<=0){
-            return  balance + "недостаточно средств";
+        if (TakeMoney <= 0) {
+            return balance + "недостаточно средств ";
         }
-       customers.setBalance(balance-TakeMoney);
-       bankService.createacc(customers);
-
+        customers.setBalance(balance - TakeMoney);
+        bankService.createacc(customers);
+        operInsertRepository.insertWithQuery(balance, customers.getId());
         return "Успешно отнято " + balance;
 
-   }
+    }
+
+
+
+
 }

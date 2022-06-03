@@ -1,9 +1,13 @@
 package com.example.restapi.model;
 
 
+
 import lombok.Data;
 
+
+
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 
 @Table(name = "operation")
@@ -11,11 +15,15 @@ import javax.persistence.*;
 @Entity
 public class Operation {
 
+    @ManyToOne
+    private Customers customers;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int DataTime;
+
+    private Timestamp data_time;
 
     private int summ;
 
@@ -23,5 +31,6 @@ public class Operation {
 
     public Operation() {
     }
+
 
 }

@@ -17,23 +17,23 @@ public class RestApiApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(RestApiApplication.class, args);
-
-        Customers customer = new Customers();
-        Operation oper = new Operation();
-        oper.setId(1);
-        oper.setDataTime(20201222);
-        oper.setSumm(200);
-            Configuration con = new Configuration().configure()
-            .addAnnotatedClass(Operation.class)
-            .addAnnotatedClass(Customers.class);
-    StandardServiceRegistryBuilder sbild = new StandardServiceRegistryBuilder()
-            .applySettings(con.getProperties());
-    SessionFactory sf = con.buildSessionFactory(sbild.build());
-    Session session = sf.openSession();
-        session.beginTransaction();
-        session.save(customer);
-        session.save(oper);
-        session.getTransaction().commit();
+//
+//        Customers customer = new Customers();
+//        Operation oper = new Operation();
+////        oper.setId(1);
+////        oper.setDatatime(2022-05-27);
+////        oper.setSumm(200);
+//            Configuration con = new Configuration().configure()
+//            .addAnnotatedClass(Operation.class)
+//            .addAnnotatedClass(Customers.class);
+//    StandardServiceRegistryBuilder sbild = new StandardServiceRegistryBuilder()
+//            .applySettings(con.getProperties());
+//    SessionFactory sf = con.buildSessionFactory(sbild.build());
+//    Session session = sf.openSession();
+//        session.beginTransaction();
+//        session.save(customer);
+//        session.save(oper);
+//        session.getTransaction().commit();
 
 
 
