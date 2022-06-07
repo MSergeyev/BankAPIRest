@@ -4,17 +4,15 @@ import com.example.restapi.controller.OperInsertRepository;
 import com.example.restapi.dao.Dao;
 import com.example.restapi.dao.Repo;
 import com.example.restapi.model.Customers;
-
-
-import com.example.restapi.model.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 
 
 
 @Service
 public class BankService {
+
 
     @Autowired
     private Repo repo;
@@ -36,13 +34,5 @@ public class BankService {
 
     }
 
-    public void opersave(Operation operation) {
-        dao.save(operation);
-
     }
 
-
-
-
-
-}
