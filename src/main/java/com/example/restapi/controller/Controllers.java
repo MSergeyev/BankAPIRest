@@ -2,16 +2,16 @@ package com.example.restapi.controller;
 
 
 import com.example.restapi.dao.Dao;
-import com.example.restapi.model.Customers;
+import com.example.restapi.model.Customer;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import com.example.restapi.service.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityNotFoundException;
-
-
 
 @RestController
 @RequestMapping("/api")
@@ -30,18 +30,14 @@ public class Controllers {
     public String getBalance(@Validated @PathVariable int id) {
         try {
             return bankService.getBalance(id) + "";
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return "Id не найден " + e;
         }
-
-
     }
 
-
     @PostMapping("/putMoney/")
-    public String putMoney(@Validated @RequestBody Customers customers) {
+    public String putMoney(@Validated @RequestBody Customer customers) {
         int balance = 0;
         try {
             balance = bankService.getBalance(customers.getId());
@@ -63,9 +59,8 @@ public class Controllers {
 
     }
 
-
     @PostMapping("/takeMoney")
-    public String takeMoney(@RequestBody Customers customers) {
+    public String takeMoney(@RequestBody Customer customers) {
 
         int balance = 0;
         try {
@@ -87,13 +82,12 @@ public class Controllers {
     }
 
     @GetMapping("/getOperationList/")
-    public ArrayList<String> getOperationList(@RequestParam ("id") int id,
+    public ArrayList<String> getOperationList(@RequestParam("id") int id,
                                               @RequestParam("startData") String startData, @RequestParam(value = "endData",
-            defaultValue ="2099-06-06") String endData )throws SQLException  {
-        return operInsertRepository.getOperationL(id, startData,endData);
+            defaultValue = "2099-06-06") String endData) throws SQLException {
+        return operInsertRepository.getOperationL(id, startData, endData);
 
     }
-
 
 
 }

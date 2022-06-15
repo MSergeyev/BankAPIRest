@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 public class Operation {
 
     @ManyToOne
-    private Customers customers;
+    private Customer customers;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

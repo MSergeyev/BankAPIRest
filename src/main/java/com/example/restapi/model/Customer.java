@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Data
 @Table(name = "customers")
-public class Customers{
+public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +23,10 @@ public class Customers{
     private List<Operation> operation = new ArrayList<Operation>();
 
 
-    public Customers() {
+    public Customer() {
     }
 
-    public Customers(int id, int balance) {
+    public Customer(int id, int balance) {
         this.id = id;
         this.balance = balance;
 
